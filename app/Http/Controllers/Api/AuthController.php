@@ -34,7 +34,7 @@ class AuthController extends Controller
         $req->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
@@ -43,7 +43,16 @@ class AuthController extends Controller
             'password' => bcrypt($req->password),
         ]);
 
-        return response()->json(['user' => $user]);
+        // if no users exist, assign admin role
+        if (User::count() == 1) {
+            $user->assignRole('admin');
+        } else {
+            $user->assignRole('customer');
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['token' => $token, 'user' => $user]);
     }
 
     public function me(Request $request)

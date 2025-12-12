@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\BannerController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ use App\Http\Controllers\Api\UserController;
 // AUTH
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+
+// ADMIN LOGIN
+Route::post('/admin/login', [AdminController::class, 'login']);
 
 // PUBLIC DATA
 Route::get('/products', [ProductController::class, 'index']);
